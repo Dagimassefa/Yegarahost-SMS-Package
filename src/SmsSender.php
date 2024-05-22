@@ -4,37 +4,33 @@ namespace Dagim\Package;
 
 class SmsSender
 {
-    private function loadEnv($file)
-    {
-        if (!file_exists($file)) {
-            throw new \Exception("The .env file does not exist.");
-        }
+    private $generatedOtps = [];
 
-        $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        foreach ($lines as $line) {
-            if (strpos(trim($line), '#') === 0) {
-                continue; // Skip comments
-            }
-            list($name, $value) = explode('=', $line, 2);
-            $name = trim($name);
-            $value = trim($value);
-            if (!array_key_exists($name, $_SERVER) && !array_key_exists($name, $_ENV)) {
-                putenv(sprintf('%s=%s', $name, $value));
-                $_ENV[$name] = $value;
-                $_SERVER[$name] = $value;
-            }
+    public function generateOtp()
+    {
+        // Generate a random 6-digit OTP
+        $otp = rand(100000, 999999);
+        
+        // Check if OTP is already generated
+        while (in_array($otp, $this->generatedOtps)) {
+            $otp = rand(100000, 999999);
         }
+        
+        // Add generated OTP to the list
+        $this->generatedOtps[] = $otp;
+
+        return $otp;
     }
 
-    public function sendSms($to, $otp)
+    public function sendSms($to)
     {
-        // Load environment variables
-        $this->loadEnv(__DIR__ . '/../../.env');
+        // Generate OTP
+        $otp = $this->generateOtp();
 
-        // Retrieve configurations from environment variables
+        // Retrieve configurations from Laravel's environment variables
         $server = 'https://sms.yegara.com/api3/send';
-        $domain = getenv('SMS_DOMAIN');
-        $id = getenv('SMS_ID');
+        $domain = env('SMS_DOMAIN');
+        $id = env('SMS_ID');
 
         $postData = array('to' => $to, 'otp' => $otp, 'id' => $id, 'domain' => $domain);
         $content = json_encode($postData);
@@ -61,3 +57,4 @@ class SmsSender
         }
     }
 }
+
