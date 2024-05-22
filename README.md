@@ -55,6 +55,15 @@ $response = $smsSender->sendSms($recipientNumber);
 echo $response;
 ```
 
+## Request Parameters
+
+| Parameter       | Explanation                                               |
+|-----------------|-----------------------------------------------------------|
+| `$id`           | Your Package ID for your Domain at Yegara                  |
+| `$to`           | The user’s phone number you want to send the SMS to        |
+| `$otp`          | 4 - 6 digit number to send as OTP                         |
+| `$domain`       | Your Domain Name                                          |
+
 ## Note
 
 - This package utilizes the Yegara HOST API for sending OTP SMS.
