@@ -1,36 +1,21 @@
-<?php
-
+<?php 
 namespace Dagim\Package;
 
 class SmsSender
 {
-    private $generatedOtps = [];
-
-    public function generateOtp()
+     private function generateOTP()
     {
         // Generate a random 6-digit OTP
-        $otp = rand(100000, 999999);
-        
-        // Check if OTP is already generated
-        while (in_array($otp, $this->generatedOtps)) {
-            $otp = rand(100000, 999999);
-        }
-        
-        // Add generated OTP to the list
-        $this->generatedOtps[] = $otp;
-
-        return $otp;
+        return str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
     }
-
     public function sendSms($to)
     {
-        // Generate OTP
-        $otp = $this->generateOtp();
-
+         $otp = $this->generateOTP();
         // Retrieve configurations from Laravel's environment variables
         $server = 'https://sms.yegara.com/api3/send';
-        $domain = env('SMS_DOMAIN');
-        $id = env('SMS_ID');
+      $domain = env('SMS_DOMAIN');
+$id = env('SMS_ID');
+
 
         $postData = array('to' => $to, 'otp' => $otp, 'id' => $id, 'domain' => $domain);
         $content = json_encode($postData);
@@ -58,3 +43,4 @@ class SmsSender
     }
 }
 
+?>

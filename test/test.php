@@ -6,11 +6,11 @@ use Dagim\Package\SmsSender;
 
 $smsSender = new SmsSender();
 
-// Provide test data (recipient number and OTP)
-$recipientNumber = '0911686102'; // Replace with actual recipient number
-$otp = '123456'; // Replace with actual OTP
+// Provide test data (recipient number)
+$recipientNumber = '##################'; // Replace with actual recipient number
+
 
 // Call the sendSms method
-$response = $smsSender->sendSms($recipientNumber, $otp);
+$response = $smsSender->sendSms($recipientNumber);
 
 echo $response;
