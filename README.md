@@ -7,7 +7,7 @@ This Laravel package facilitates sending One Time Passwords (OTPs) via SMS using
 To install this package, use Composer:
 
 ```bash
-composer require dagim/sms-sender
+composer require dagim/package:dev-main
 ```
 
 ## Configuration
